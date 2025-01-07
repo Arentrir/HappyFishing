@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textTransform: {fileID: 0}
-  startScale: {x: 0.01, y: 0.01, z: 1}
+  startScale: {x: 0, y: 0, z: 1}
   endScale: {x: 1.2, y: 1.2, z: 1}
   scaleDuration: 0.3
 --- !u!1 &5133268908102835590

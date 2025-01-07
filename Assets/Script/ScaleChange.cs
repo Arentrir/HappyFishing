@@ -10,9 +10,14 @@ public class ScaleChange : MonoBehaviour
     private float elapsedTime = 0;     // Tracks elapsed time
 
     private bool isScaling = false;    // Determines if sliding is active
+    private bool isClosed = true;
+    private Vector3 privateStartScale;
+    private Vector3 privateEndScale;
+
 
     void Start()
     {
+        //isClosed = true;
         textTransform = GetComponent<RectTransform>();
         // Initialize text at the start position
         textTransform.localScale = startScale;
@@ -27,12 +32,16 @@ public class ScaleChange : MonoBehaviour
             float t = Mathf.Clamp01(elapsedTime / scaleDuration);
 
             // Smooth interpolation using Mathf.SmoothStep for a smoother motion
-            textTransform.localScale = Vector3.Lerp(startScale, endScale, t);
+            textTransform.localScale = Vector3.Lerp(privateStartScale, privateEndScale, t);
 
             // Stop sliding when finished
             if (t >= 1.0f)
             {
                 isScaling = false;
+                if (isClosed) 
+                {
+                    this.gameObject.SetActive(false);
+                }
             }
         }
     }
@@ -40,7 +49,25 @@ public class ScaleChange : MonoBehaviour
     // Call this method to start sliding the text
     public void StartScaling()
     {
-        elapsedTime = 0;
-        isScaling = true;
+        if (isClosed)
+        {
+            elapsedTime = 0;
+            isScaling = true;
+            isClosed = false;
+            privateStartScale = startScale;
+            privateEndScale = endScale;
+            this.gameObject.SetActive(true);
+        }
+    }
+    public void ClosePanel()
+    {
+        if (!isClosed)
+        {
+            isClosed = true;
+            isScaling = true;
+            elapsedTime = 0;
+            privateStartScale = endScale;
+            privateEndScale = startScale;
+        }
     }
 }

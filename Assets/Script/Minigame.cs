@@ -290,6 +290,5 @@ public class Minigame : MonoBehaviour
         BarrierList = selectedSlots.OrderBy(b => b.Slot).ToList();
         BarrierHit = (10 + (BarrierList[0].Slot * 8)) - 3;
         CurrentClicks = BarrierList[0].Clicks;
-        Debug.Log(BarrierList.Count);
     }
 }
