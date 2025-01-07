@@ -1,6 +1,8 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Fish", menuName = "Scriptable Objects/Fish")]
+
+
 public class Fish : ScriptableObject
 {
     public int ID;
@@ -8,4 +10,8 @@ public class Fish : ScriptableObject
     public Sprite image;
     public float weight;
     public float price;
+    
 }
+
+
+

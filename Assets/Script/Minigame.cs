@@ -18,6 +18,13 @@ public class Minigame : MonoBehaviour
     public FilledTrapezoid ProgressBar;
     public FilledTrapezoid FailBar;
     public GameObject ClickBarrier;
+    public MoveScreen FailMoveScreen;
+    public MoveScreen StartMoveScreen;
+    public MoveScreen SuccessMoveScreen;
+    public GameManagingScript GameManagingScript;
+    public FishDisplay ChooseFish;
+    public GameObject FishPrefab;
+    private GameObject FishSlot;
 
 
     [Range(0, 100)]
@@ -30,11 +37,51 @@ public class Minigame : MonoBehaviour
     public float FailTime;
     public float HeadStartTime;
     public float FailSpeed;
+    public bool isFishFail;
+    public float FailTextUptime;
+    public float FailTextTimer;
+    public bool isFishCaught;
+    public List<Fish> FishList;
+    public float[] RarityPercentages;
+
+    public FishDisplay GenerateFish()
+    {
+        int randomID = Random.Range(1, 4);
+        Fish selectedFish = FishList.Find(fish => fish.ID == randomID);
+        FishDisplay fishToReturn = new FishDisplay();
+        fishToReturn.fish = selectedFish;
+
+        // Calculate the cumulative sum of weights
+        float cumulativeSum = 0f;
+        float randomNumber = 0;
+        float totalPercentages = 0;
+
+        for (int i = 0; i < RarityPercentages.Length; i++)
+        {
+            totalPercentages += RarityPercentages[i];
+        }
+        randomNumber = Random.Range(0, totalPercentages);
+
+        for (int i = 0; i < RarityPercentages.Length; i++)
+        {
+            cumulativeSum += RarityPercentages[i];
+            if (randomNumber < cumulativeSum)
+            {
+                fishToReturn.rarity = i;
+                break;
+            }
+        }
+        return fishToReturn; 
+    } 
 
     public void StartMinigame() 
     {
+        isFishFail = false;
+        isFishCaught = false;
         Progress = 0;
         FailTime = 0 - (28.5f * HeadStartTime);
+        FailTextTimer = 0;
+        StartMoveScreen.StartSliding();
         ProgressBar.SetPoints(
                 new Vector3(20, 150, -15),  // Top-left
                 new Vector3(20, 150, -15),   // Top-right
@@ -48,6 +95,8 @@ public class Minigame : MonoBehaviour
                 new Vector3(35, 150, -16), // Bottom-right
                 new Vector3(35, 150, -16) // Bottom-left
             );
+        SpawnRandomObjects(Random.Range(1, 6), 1);
+        ChooseFish = GenerateFish();
     }
 
 
@@ -56,68 +105,116 @@ public class Minigame : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartMinigame();
-        SpawnRandomObjects(Random.Range(1, 6), 1);
+        
+       // StartMinigame();
     }
 
     // Update is called once per frame
     void Update()
     {
-        FailTime += Time.deltaTime * (100 / FailSpeed);
-        if (FailTime > 0) 
+        if (!isFishCaught)
         {
-            float t = FailTime / 100f;
-
-            FailBar.trapezoidPoints[0] = Vector3.Lerp(new Vector3(20, 150, -16), new Vector3(5, 0, -16), t);
-            FailBar.trapezoidPoints[3] = Vector3.Lerp(new Vector3(35, 150, -16), new Vector3(50, 0, -16), t);
-
-            FailBar.UpdateMesh();
+            FailTime += Time.deltaTime * (100 / FailSpeed);
         }
-        if (FailTime > Progress) 
+        if (FailTime > Progress && !isFishFail) 
         {
+            isFishFail = true;
+            FailMoveScreen.StartSliding();
             Debug.Log("Fail Fish!");
         }
-        if (!(Progress > BarrierHit))
+        if (!isFishFail && !isFishCaught)
         {
-            if (Input.GetKey(KeyCode.Mouse0) && Progress < 100)
+            if (FailTime > 0)
             {
-                Progress += Time.deltaTime * (100 / ReelTime);
-                float t = Progress / 100f;
+                float t = FailTime / 100f;
 
-                ProgressBar.trapezoidPoints[0] = Vector3.Lerp(new Vector3(20, 150, -15), new Vector3(5, 0, -15), t);
-                ProgressBar.trapezoidPoints[3] = Vector3.Lerp(new Vector3(35, 150, -15), new Vector3(50, 0, -15), t);
+                FailBar.trapezoidPoints[0] = Vector3.Lerp(new Vector3(20, 150, -16), new Vector3(5, 0, -16), t);
+                FailBar.trapezoidPoints[3] = Vector3.Lerp(new Vector3(35, 150, -16), new Vector3(50, 0, -16), t);
 
-                ProgressBar.UpdateMesh();
-                if (Progress >= 100)
+                FailBar.UpdateMesh();
+            }
+            if (!(Progress > BarrierHit))
+            {
+                if (Input.GetKey(KeyCode.Mouse0) && Progress < 100)
                 {
-                    Debug.Log("Caught a Fish!");
+                    Progress += Time.deltaTime * (100 / ReelTime);
+                    float t = Progress / 100f;
+
+                    ProgressBar.trapezoidPoints[0] = Vector3.Lerp(new Vector3(20, 150, -15), new Vector3(5, 0, -15), t);
+                    ProgressBar.trapezoidPoints[3] = Vector3.Lerp(new Vector3(35, 150, -15), new Vector3(50, 0, -15), t);
+
+                    ProgressBar.UpdateMesh();
+                    if (Progress >= 100)
+                    {
+                       isFishCaught = true;
+                        SuccessMoveScreen.StartSliding();
+                        Debug.Log("Caught a Fish!");
+                        GameObject CaughtFish = Instantiate(FishPrefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform.parent);
+                        CaughtFish.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 33.5f, -100);
+                        CaughtFish.GetComponent<FishDisplay>().fish = ChooseFish.fish;
+                        CaughtFish.GetComponent<FishDisplay>().rarity = ChooseFish.rarity;
+                        CaughtFish.GetComponent<ScaleChange>().StartScaling();
+                        FishSlot = CaughtFish;
+                    }
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    CurrentClicks--;
+                    TMP_Text ClickText = BarrierList[0].BarrierObject.GetComponentInChildren<TMP_Text>();
+                    ClickText.text = CurrentClicks.ToString();
+                    if (CurrentClicks <= 0)
+                    {
+                        Destroy(BarrierList[0].BarrierObject);                                       // Destroying the current Barrier GameObject
+                        Progress += 3;
+                        BarrierList.RemoveAt(0);                                                     // Removing the Reference of that Barrier from the list
+                        if (BarrierList.Count <= 0)
+                        {
+                            BarrierHit = 101;
+                        }
+                        else
+                        {
+                            BarrierHit = (10 + (BarrierList[0].Slot * 8)) - 3;                            // New Barrier Limit
+                            CurrentClicks = BarrierList[0].Clicks;                                  // Getting how many clicks required from the lowest Barrier
+
+                        }
+                    }
                 }
             }
         }
         else 
         {
-          if (Input.GetKeyDown(KeyCode.Mouse0)) 
-          {
-                CurrentClicks--;
-                TMP_Text ClickText = BarrierList[0].BarrierObject.GetComponentInChildren<TMP_Text>();
-                ClickText.text = CurrentClicks.ToString();
-                if (CurrentClicks <= 0)
+            if (!isFishCaught)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0) && FailMoveScreen.slideDuration < FailTextTimer)
                 {
-                        Destroy(BarrierList[0].BarrierObject);                                       // Destroying the current Barrier GameObject
-                        Progress += 3;
-                        BarrierList.RemoveAt(0);                                                     // Removing the Reference of that Barrier from the list
-                            if (BarrierList.Count <= 0)
-                            {
-                              BarrierHit = 101;
-                            } 
-                            else
-                            {
-                             BarrierHit = (10 + (BarrierList[0].Slot * 8)) - 3;                            // New Barrier Limit
-                             CurrentClicks = BarrierList[0].Clicks;                                  // Getting how many clicks required from the lowest Barrier
-
-                            }
+                    FailTextTimer += FailTextUptime;
                 }
-          }
+                FailTextTimer += Time.deltaTime;
+                if (FailTextTimer > FailTextUptime)
+                {
+                    foreach (var barrier in BarrierList)
+                    {
+                        Destroy(barrier.BarrierObject);
+                    }
+                    GameManagingScript.ResetFishing();
+                    this.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    isFishCaught = false;
+                    Destroy(FishSlot);
+                    GameManagingScript.ResetFishing();
+                    this.gameObject.SetActive(false);
+                    // Add Current Chosen Fish to the Inventory.
+
+                }
+            }
         }
     }
 
@@ -193,6 +290,6 @@ public class Minigame : MonoBehaviour
         BarrierList = selectedSlots.OrderBy(b => b.Slot).ToList();
         BarrierHit = (10 + (BarrierList[0].Slot * 8)) - 3;
         CurrentClicks = BarrierList[0].Clicks;
+        Debug.Log(BarrierList.Count);
     }
-
 }

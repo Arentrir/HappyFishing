@@ -10,6 +10,8 @@ public class FishDisplay : MonoBehaviour {
     public TMP_Text fishWeight;
 
     public Image fishImage;
+    public int rarity;
+
     void Start()
     {
         fishName.text = fish.fishName;

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4056075342224465866}
   - component: {fileID: 2736650483520383422}
+  - component: {fileID: 2378857014527189288}
   m_Layer: 5
   m_Name: FishPrefab
   m_TagString: Untagged
@@ -55,6 +56,23 @@ MonoBehaviour:
   fishName: {fileID: 8290648826664889119}
   fishWeight: {fileID: 3587349599748312554}
   fishImage: {fileID: 8499686001100470357}
+  rarity: 0
+--- !u!114 &2378857014527189288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4852809863094020573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8895b20d17ba44696285bfb393ccfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textTransform: {fileID: 0}
+  startScale: {x: 0.01, y: 0.01, z: 1}
+  endScale: {x: 1.2, y: 1.2, z: 1}
+  scaleDuration: 0.3
 --- !u!1 &5133268908102835590
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,8 @@ public class GameManagingScript : MonoBehaviour {
     public Canvas Canvas;
     public GameObject PreMinigameScreen;
     public SlideText PreMinigameText;
+    public Minigame Minigame;
+    public SlideText PreMinigameText2;
 
     // States
     [Header("States")]
@@ -127,11 +129,10 @@ public class GameManagingScript : MonoBehaviour {
 
             // Interpolate position using the adjusted t value
             float x = Mathf.Lerp(0, LineCastTime, t);
-            float y = Mathf.Lerp(0, -100, t);
+            float y = Mathf.Lerp(0, -75, t);
 
 
             Bobber.anchoredPosition = new Vector2(x, y);
-
         }
         else 
         { 
@@ -176,9 +177,7 @@ public class GameManagingScript : MonoBehaviour {
             isFishReady = false;   
             isIdle = true;
             Bobber.anchoredPosition = Vector2.zero;
-            PreMinigameScreen.SetActive(false);
-            Debug.Log("Fish ran away!");
-            // FAIL ANIMATION TRIGGERS HERE!!!
+            PreMinigameText2.StartSliding();
         }
     }
     public void StartMinigame() 
@@ -186,5 +185,26 @@ public class GameManagingScript : MonoBehaviour {
         PreMinigameScreen.SetActive(false);
         isFishReady = false;
         isMinigaming = true;
+        Minigame.gameObject.SetActive(true);
+        Minigame.StartMinigame();
     }
+
+    public void ResetFishing() 
+    {
+        ElapsedTime = 10;
+        Bobber.anchoredPosition = Vector2.zero;
+        isIdle = true;
+        isCharging = false;
+        isMoving = false;
+        isWaiting = false;
+        isFishReady = false;
+        isMinigaming = false;
+        ChargeCounter = 0;
+        BiteCounter = 0;
+        ChargeCounter2 = 0;
+        FishFumble = 0;
+        LineCastTime = 0;
+        Debug.Log(Bobber.anchoredPosition);
+    }
+
 }
