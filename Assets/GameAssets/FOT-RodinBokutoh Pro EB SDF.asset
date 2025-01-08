@@ -427,6 +427,52 @@ MonoBehaviour:
       m_LigatureGlyphID: 12111
     - m_ComponentGlyphIDs: 0200000020000000
       m_LigatureGlyphID: 12112
+    - m_ComponentGlyphIDs: 17000000100000001200000012000000
+      m_LigatureGlyphID: 9862
+    - m_ComponentGlyphIDs: 170000001000000018000000
+      m_LigatureGlyphID: 9842
+    - m_ComponentGlyphIDs: 17000000100000001200000012000000
+      m_LigatureGlyphID: 9815
+    - m_ComponentGlyphIDs: 170000001000000018000000
+      m_LigatureGlyphID: 9795
+    - m_ComponentGlyphIDs: 4e000000100000004e000000
+      m_LigatureGlyphID: 11867
+    - m_ComponentGlyphIDs: 4e0000004a0000004f000000
+      m_LigatureGlyphID: 8190
+    - m_ComponentGlyphIDs: 4e0000004e00000013000000
+      m_LigatureGlyphID: 8186
+    - m_ComponentGlyphIDs: 4e0000004e00000014000000
+      m_LigatureGlyphID: 8187
+    - m_ComponentGlyphIDs: 4e00000013000000
+      m_LigatureGlyphID: 7607
+    - m_ComponentGlyphIDs: 4e00000014000000
+      m_LigatureGlyphID: 8023
+    - m_ComponentGlyphIDs: 4e00000043000000
+      m_LigatureGlyphID: 8036
+    - m_ComponentGlyphIDs: 4e00000048000000
+      m_LigatureGlyphID: 7604
+    - m_ComponentGlyphIDs: 4e0000004d000000
+      m_LigatureGlyphID: 8037
+    - m_ComponentGlyphIDs: 4e0000004e000000
+      m_LigatureGlyphID: 7601
+    - m_ComponentGlyphIDs: 4e00000054000000
+      m_LigatureGlyphID: 8027
+    - m_ComponentGlyphIDs: 15000000100000001200000012000000
+      m_LigatureGlyphID: 9860
+    - m_ComponentGlyphIDs: 150000001000000016000000
+      m_LigatureGlyphID: 9834
+    - m_ComponentGlyphIDs: 150000001000000018000000
+      m_LigatureGlyphID: 9840
+    - m_ComponentGlyphIDs: 15000000100000001a000000
+      m_LigatureGlyphID: 9849
+    - m_ComponentGlyphIDs: 15000000100000001200000012000000
+      m_LigatureGlyphID: 9813
+    - m_ComponentGlyphIDs: 150000001000000016000000
+      m_LigatureGlyphID: 9787
+    - m_ComponentGlyphIDs: 150000001000000018000000
+      m_LigatureGlyphID: 9793
+    - m_ComponentGlyphIDs: 15000000100000001a000000
+      m_LigatureGlyphID: 9802
     m_GlyphPairAdjustmentRecords:
     - m_FirstAdjustmentRecord:
         m_GlyphIndex: 37

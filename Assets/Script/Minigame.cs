@@ -25,6 +25,7 @@ public class Minigame : MonoBehaviour
     public FishDisplay ChooseFish;
     public GameObject FishPrefab;
     private GameObject FishSlot;
+    public InventoryStorage InventoryStorage;
 
 
     [Range(0, 100)]
@@ -41,13 +42,13 @@ public class Minigame : MonoBehaviour
     public float FailTextUptime;
     public float FailTextTimer;
     public bool isFishCaught;
-    public List<Fish> FishList;
+    
     public float[] RarityPercentages;
 
     public FishDisplay GenerateFish()
     {
         int randomID = Random.Range(1, 4);
-        Fish selectedFish = FishList.Find(fish => fish.ID == randomID);
+        Fish selectedFish = Fish.GetItemData(randomID);
         FishDisplay fishToReturn = new FishDisplay();
         fishToReturn.fish = selectedFish;
 
@@ -211,6 +212,13 @@ public class Minigame : MonoBehaviour
                     Destroy(FishSlot);
                     GameManagingScript.ResetFishing();
                     this.gameObject.SetActive(false);
+                    StoredFish tempFish = new StoredFish();
+                    tempFish.storedFishID = ChooseFish.fish.ID;
+                    tempFish.storedFishWeight = ChooseFish.fish.weight;
+                    tempFish.storedFishPrice = ChooseFish.fish.price;
+                    tempFish.storedFishRarity = ChooseFish.rarity;
+
+                    InventoryStorage.storedFishList.Add(tempFish);
                     // Add Current Chosen Fish to the Inventory.
 
                 }
