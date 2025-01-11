@@ -45,12 +45,14 @@ public class Minigame : MonoBehaviour
     
     public float[] RarityPercentages;
 
+
     public FishDisplay GenerateFish()
     {
         int randomID = Random.Range(1, 4);
         Fish selectedFish = Fish.GetItemData(randomID);
         FishDisplay fishToReturn = new FishDisplay();
         fishToReturn.fish = selectedFish;
+        //fishToReturn.dynamicWeight = selectedFish.weight 
 
         // Calculate the cumulative sum of weights
         float cumulativeSum = 0f;
@@ -72,6 +74,7 @@ public class Minigame : MonoBehaviour
                 break;
             }
         }
+        fishToReturn.dynamicWeight = GetRandomNumber(selectedFish.weight, fishToReturn.rarity + 1, selectedFish.weight / 3, selectedFish.weight * 5);
         return fishToReturn; 
     } 
 
@@ -154,6 +157,7 @@ public class Minigame : MonoBehaviour
                         CaughtFish.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 33.5f, -100);
                         CaughtFish.GetComponent<FishDisplay>().fish = ChooseFish.fish;
                         CaughtFish.GetComponent<FishDisplay>().rarity = ChooseFish.rarity;
+                        CaughtFish.GetComponent<FishDisplay>().dynamicWeight = ChooseFish.dynamicWeight;
                         CaughtFish.GetComponent<ScaleChange>().StartScaling();
                         FishSlot = CaughtFish;
                     }
@@ -214,8 +218,7 @@ public class Minigame : MonoBehaviour
                     this.gameObject.SetActive(false);
                     StoredFish tempFish = new StoredFish();
                     tempFish.storedFishID = ChooseFish.fish.ID;
-                    tempFish.storedFishWeight = ChooseFish.fish.weight;
-                    tempFish.storedFishPrice = ChooseFish.fish.price;
+                    tempFish.storedFishWeight = (float)System.Math.Round(ChooseFish.dynamicWeight, 2);
                     tempFish.storedFishRarity = ChooseFish.rarity;
 
                     InventoryStorage.storedFishList.Add(tempFish);
@@ -299,4 +302,27 @@ public class Minigame : MonoBehaviour
         BarrierHit = (10 + (BarrierList[0].Slot * 8)) - 3;
         CurrentClicks = BarrierList[0].Clicks;
     }
+
+    public float GetRandomNumber(float baseWeight, int rarity, float min, float max)
+    {
+        // Map rarity (1-5) to standard deviation
+        // Higher rarity -> Larger standard deviation
+        float stddev = Mathf.Lerp(5f, 20f, (rarity - 1) / 4f);
+
+        // Generate two random numbers between 0 and 1
+        float u1 = Random.value;
+        float u2 = Random.value;
+
+        // Box-Muller transform to generate a standard normal distribution (mean = 0, stddev = 1)
+        float standardNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Cos(2.0f * Mathf.PI * u2);
+
+        // Adjust the distribution using baseWeight (mean) and rarity (stddev)
+        float mean = baseWeight;
+        float result = mean + standardNormal * stddev;
+
+        // Clamp the result to the specified range
+        return Mathf.Clamp(result, min, max);
+    }
+
+
 }

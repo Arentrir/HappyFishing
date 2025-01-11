@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class StoredFish 
 {
     public int storedFishID;
-    public int storedFishPrice;
     public float storedFishWeight;
     public int storedFishRarity;
 }

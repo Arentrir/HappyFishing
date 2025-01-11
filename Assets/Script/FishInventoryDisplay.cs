@@ -55,11 +55,11 @@ public class FishInventoryDisplay : MonoBehaviour
 
         // Set other details
         DetailsFishWeightSlot.text = "Weight: " + ThisFish.storedFishWeight.ToString();
-        DetailsFishPriceSlot.text = "Price: " + ThisFish.storedFishPrice.ToString();
+        DetailsFishPriceSlot.text = "Price: " + InventorySell.CalculatePrice(Fish.GetItemData(ThisFish.storedFishID).price, ThisFish.storedFishWeight, Fish.GetItemData(ThisFish.storedFishID).weight, ThisFish.storedFishRarity);
         DetailsFishFlavourTextSlot.text = fishData.flavourText;
     }
 
-    private string GetRarityColor(int rarity)
+    public static string GetRarityColor(int rarity)
     {
         switch (rarity)
         {
