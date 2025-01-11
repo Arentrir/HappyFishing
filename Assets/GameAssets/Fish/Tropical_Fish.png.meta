@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Tropical_Fish_0: -4606014852497165429
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

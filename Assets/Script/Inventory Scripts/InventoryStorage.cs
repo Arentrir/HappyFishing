@@ -3,6 +3,7 @@ using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 public class StoredFish 
 {
@@ -40,6 +41,8 @@ public class InventoryStorage : MonoBehaviour
         DetailsFishWeightSlot.text = "";
         DetailsFishPriceSlot.text = "";
         DetailsFishFlavourTextSlot.text = "";
+        LoadMoney();
+        LoadFishList(); 
     }
 
     void Update()
@@ -95,6 +98,38 @@ public class InventoryStorage : MonoBehaviour
     {
         upgradeList[0] = 1;
 
-    } 
+    }
 
+    public void SaveMoney()
+    {
+        PlayerPrefs.SetInt("Money", money);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadMoney()
+    {
+        money = PlayerPrefs.GetInt("Money", 0);
+    }
+
+    public void SaveFishList()
+    {
+        string json = JsonConvert.SerializeObject(storedFishList);
+        PlayerPrefs.SetString("StoredFishList", json);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadFishList()
+    {
+        string json = PlayerPrefs.GetString("StoredFishList");
+        storedFishList = JsonConvert.DeserializeObject<List<StoredFish>>(json);
+        if (storedFishList == null)
+        {
+            storedFishList = new List<StoredFish>();    
+        }
+    }
+
+    public void DeleteAll()
+    {
+        PlayerPrefs.DeleteAll();
+    }
 }

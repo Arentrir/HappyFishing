@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      fishing_bobber_0: -6133643725177954853
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -77,6 +77,7 @@ public class InventorySell : MonoBehaviour
     public void UpdateShopMoney()
     {
         shopDisplayMoney.text = "$" + inventoryStorage.money;
+        inventoryStorage.SaveMoney();
     }
 
     public void SellButton()
@@ -97,6 +98,7 @@ public class InventorySell : MonoBehaviour
         }
         soldMoney = 0;
         UpdateShopMoney();
+        inventoryStorage.SaveFishList();
     }
 
     public static int CalculatePrice(int basePrice, float dynamicWeight, float baseWeight, int rarity)

@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Pufferfish_0: -371740909335319690
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

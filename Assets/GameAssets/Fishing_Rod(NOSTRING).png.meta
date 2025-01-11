@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fishing_Rod(NOSTRING)_0: 3059446393969324041
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

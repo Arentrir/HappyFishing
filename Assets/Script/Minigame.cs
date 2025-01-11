@@ -137,66 +137,25 @@ public class Minigame : MonoBehaviour
 
                 FailBar.UpdateMesh();
             }
-            if (!(Progress > BarrierHit))
-            {
-                if (Input.GetKey(KeyCode.Mouse0) && Progress < 100)
-                {
-                    Progress += Time.deltaTime * (100 / ReelTime);
-                    float t = Progress / 100f;
-
-                    ProgressBar.trapezoidPoints[0] = Vector3.Lerp(new Vector3(20, 150, -15), new Vector3(5, 0, -15), t);
-                    ProgressBar.trapezoidPoints[3] = Vector3.Lerp(new Vector3(35, 150, -15), new Vector3(50, 0, -15), t);
-
-                    ProgressBar.UpdateMesh();
-                    if (Progress >= 100)
-                    {
-                       isFishCaught = true;
-                        SuccessMoveScreen.StartSliding();
-                        Debug.Log("Caught a Fish!");
-                        GameObject CaughtFish = Instantiate(FishPrefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform.parent);
-                        CaughtFish.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 33.5f, -100);
-                        CaughtFish.GetComponent<FishDisplay>().fish = ChooseFish.fish;
-                        CaughtFish.GetComponent<FishDisplay>().rarity = ChooseFish.rarity;
-                        CaughtFish.GetComponent<FishDisplay>().dynamicWeight = ChooseFish.dynamicWeight;
-                        CaughtFish.GetComponent<ScaleChange>().StartScaling();
-                        FishSlot = CaughtFish;
-                    }
-                }
-            }
-            else
-            {
-                if (Input.GetKeyDown(KeyCode.Mouse0))
-                {
-                    CurrentClicks--;
-                    TMP_Text ClickText = BarrierList[0].BarrierObject.GetComponentInChildren<TMP_Text>();
-                    ClickText.text = CurrentClicks.ToString();
-                    if (CurrentClicks <= 0)
-                    {
-                        Destroy(BarrierList[0].BarrierObject);                                       // Destroying the current Barrier GameObject
-                        Progress += 3;
-                        BarrierList.RemoveAt(0);                                                     // Removing the Reference of that Barrier from the list
-                        if (BarrierList.Count <= 0)
-                        {
-                            BarrierHit = 101;
-                        }
-                        else
-                        {
-                            BarrierHit = (10 + (BarrierList[0].Slot * 8)) - 3;                            // New Barrier Limit
-                            CurrentClicks = BarrierList[0].Clicks;                                  // Getting how many clicks required from the lowest Barrier
-
-                        }
-                    }
-                }
-            }
+            // if (!(Progress > BarrierHit))
+            // {
+            //     if (Input.GetKey(KeyCode.Mouse0) && Progress < 100)
+            //     {
+            //         HoldMinigame();
+            //     }
+            // }
+            // else
+            // {
+            //     if (Input.GetKeyDown(KeyCode.Mouse0))
+            //     {
+            //         ClickMinigame();
+            //     }
+            // }
         }
         else 
         {
             if (!isFishCaught)
             {
-                if (Input.GetKeyDown(KeyCode.Mouse0) && FailMoveScreen.slideDuration < FailTextTimer)
-                {
-                    FailTextTimer += FailTextUptime;
-                }
                 FailTextTimer += Time.deltaTime;
                 if (FailTextTimer > FailTextUptime)
                 {
@@ -208,23 +167,78 @@ public class Minigame : MonoBehaviour
                     this.gameObject.SetActive(false);
                 }
             }
+           
+        }
+    }
+
+    public void ExtractCaughtFishToInventory()
+    {
+        isFishCaught = false;
+        Destroy(FishSlot);
+        GameManagingScript.ResetFishing();
+        this.gameObject.SetActive(false);
+        StoredFish tempFish = new StoredFish();
+        tempFish.storedFishID = ChooseFish.fish.ID;
+        tempFish.storedFishWeight = (float)System.Math.Round(ChooseFish.dynamicWeight, 2);
+        tempFish.storedFishRarity = ChooseFish.rarity;
+
+        InventoryStorage.storedFishList.Add(tempFish);
+        InventoryStorage.SaveFishList();
+        // Add Current Chosen Fish to the Inventory.
+    }
+
+    public void FailToFishResetClick()
+    {
+        if (FailMoveScreen.slideDuration < FailTextTimer)
+        {
+            FailTextTimer += FailTextUptime;
+        }
+    }
+
+    public void HoldMinigame()
+    {
+        Progress += Time.deltaTime * (100 / ReelTime);
+        float t = Progress / 100f;
+
+        ProgressBar.trapezoidPoints[0] = Vector3.Lerp(new Vector3(20, 150, -15), new Vector3(5, 0, -15), t);
+        ProgressBar.trapezoidPoints[3] = Vector3.Lerp(new Vector3(35, 150, -15), new Vector3(50, 0, -15), t);
+
+        ProgressBar.UpdateMesh();
+        if (Progress >= 100)                // Instantiates Caught Fish Object, sets the object above the InputPanel
+        {
+            isFishCaught = true;
+            SuccessMoveScreen.StartSliding();
+            Debug.Log("Caught a Fish!");
+            GameObject CaughtFish = Instantiate(FishPrefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform.parent);
+            CaughtFish.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
+            CaughtFish.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 33.5f, -100);
+            CaughtFish.GetComponent<FishDisplay>().fish = ChooseFish.fish;
+            CaughtFish.GetComponent<FishDisplay>().rarity = ChooseFish.rarity;
+            CaughtFish.GetComponent<FishDisplay>().dynamicWeight = ChooseFish.dynamicWeight;
+            CaughtFish.GetComponent<ScaleChange>().StartScaling();
+            FishSlot = CaughtFish;
+        }
+    }
+
+    public void ClickMinigame()
+    {
+        CurrentClicks--;
+        TMP_Text ClickText = BarrierList[0].BarrierObject.GetComponentInChildren<TMP_Text>();
+        ClickText.text = CurrentClicks.ToString();
+        if (CurrentClicks <= 0)
+        {
+            Destroy(BarrierList[0].BarrierObject);                                       // Destroying the current Barrier GameObject
+            Progress += 3;
+            BarrierList.RemoveAt(0);                                                     // Removing the Reference of that Barrier from the list
+            if (BarrierList.Count <= 0)
+            {
+                BarrierHit = 101;
+            }
             else
             {
-                if (Input.GetKeyDown(KeyCode.Mouse0))
-                {
-                    isFishCaught = false;
-                    Destroy(FishSlot);
-                    GameManagingScript.ResetFishing();
-                    this.gameObject.SetActive(false);
-                    StoredFish tempFish = new StoredFish();
-                    tempFish.storedFishID = ChooseFish.fish.ID;
-                    tempFish.storedFishWeight = (float)System.Math.Round(ChooseFish.dynamicWeight, 2);
-                    tempFish.storedFishRarity = ChooseFish.rarity;
+                BarrierHit = (10 + (BarrierList[0].Slot * 8)) - 3;                            // New Barrier Limit
+                CurrentClicks = BarrierList[0].Clicks;                                  // Getting how many clicks required from the lowest Barrier
 
-                    InventoryStorage.storedFishList.Add(tempFish);
-                    // Add Current Chosen Fish to the Inventory.
-
-                }
             }
         }
     }
