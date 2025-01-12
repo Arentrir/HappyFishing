@@ -26,6 +26,7 @@ public class Minigame : MonoBehaviour
     public GameObject FishPrefab;
     private GameObject FishSlot;
     public InventoryStorage InventoryStorage;
+    public TMP_Text DebugText;
 
 
     [Range(0, 100)]
@@ -182,6 +183,7 @@ public class Minigame : MonoBehaviour
         tempFish.storedFishWeight = (float)System.Math.Round(ChooseFish.dynamicWeight, 2);
         tempFish.storedFishRarity = ChooseFish.rarity;
 
+
         InventoryStorage.storedFishList.Add(tempFish);
         InventoryStorage.SaveFishList();
         // Add Current Chosen Fish to the Inventory.
@@ -208,7 +210,6 @@ public class Minigame : MonoBehaviour
         {
             isFishCaught = true;
             SuccessMoveScreen.StartSliding();
-            Debug.Log("Caught a Fish!");
             GameObject CaughtFish = Instantiate(FishPrefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform.parent);
             CaughtFish.transform.SetSiblingIndex(this.transform.GetSiblingIndex());
             CaughtFish.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 33.5f, -100);

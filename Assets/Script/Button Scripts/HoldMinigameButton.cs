@@ -7,7 +7,7 @@ public class HoldMinigameButton : MonoBehaviour, IPointerDownHandler, IPointerUp
 {
     public Minigame miniGame;
 
-    private bool isHolding = false;
+    public bool isHolding = false;
 
     void Update()
     {
@@ -42,6 +42,11 @@ public class HoldMinigameButton : MonoBehaviour, IPointerDownHandler, IPointerUp
                 miniGame.ClickMinigame();
             }
         }
+    }
+
+    public void OnDisable()
+    {
+        isHolding = false;
     }
 
     public void MinigameHolding()
