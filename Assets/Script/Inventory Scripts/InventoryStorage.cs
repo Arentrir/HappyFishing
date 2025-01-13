@@ -17,7 +17,7 @@ public class InventoryStorage : MonoBehaviour
     public int money;
     public int[] upgradeList;
     // Upgrade Prices
-    public int Rod_Power_Level_1_Price;
+    public int CurrentMap;
 
 
     public GameObject InventoryContent;
@@ -66,6 +66,10 @@ public class InventoryStorage : MonoBehaviour
     public TMP_Text Map2Price;
     public TMP_Text Map3Price;
 
+    public GameObject LockedMap1;
+    public GameObject LockedMap2;
+    public GameObject LockedMap3;
+
     void Start()
     {
         storedFishList = new List<StoredFish>();
@@ -90,6 +94,10 @@ public class InventoryStorage : MonoBehaviour
         UpgradeDescriptionSlot.text = "";
         UpgradePriceSlot.text = "";
         UpgradeBuyButton.gameObject.SetActive(false);
+
+        // Update the balance sheet
+        gameBalance.ClickStrength = Mathf.RoundToInt(upgradeList[0] * gameBalance.ClickMultiplier) + 1;
+        gameBalance.FishChance = Mathf.RoundToInt(upgradeList[1] * gameBalance.FishChanceMultiplier) + 1;
     }
 
     void Update()
@@ -202,13 +210,13 @@ public class InventoryStorage : MonoBehaviour
         if (upgradeList[0] < gameBalance.MaxRodStrengthUpgrade)
         {
             UpgradeNameSlot.text = "Rod Strength Lvl " + (upgradeList[0] + 1);
-            UpgradeDescriptionSlot.text = "Increase Click Strength from \n" + (upgradeList[0] * gameBalance.ClickMultiplier) + " > " + ((upgradeList[0] + 1) * gameBalance.ClickMultiplier);
+            UpgradeDescriptionSlot.text = "Increase Click Strength from \n" + ((upgradeList[0] * gameBalance.ClickMultiplier) + 1) + " > " + (((upgradeList[0] + 1) * gameBalance.ClickMultiplier) + 1);
             UpgradePriceSlot.text = "$" + Mathf.RoundToInt(gameBalance.BaseClickStrengthUpgradePrice * ((upgradeList[0] + 1) * gameBalance.ClickStrengthUpgradePriceMultiplier));
         }
         else
         {
             UpgradeNameSlot.text = "Rod Strength Lvl MAX";
-            UpgradeDescriptionSlot.text = "Click Strength is " + (upgradeList[0] * gameBalance.ClickMultiplier) + " (MAX)";
+            UpgradeDescriptionSlot.text = "Click Strength is " + ((upgradeList[0] * gameBalance.ClickMultiplier) + 1) + " (MAX)";
             UpgradePriceSlot.text = "MAXED";
         }
     }
@@ -220,6 +228,7 @@ public class InventoryStorage : MonoBehaviour
         {
             money -= upgradePrice;
             upgradeList[0]++;
+            gameBalance.ClickStrength = Mathf.RoundToInt(upgradeList[0] * gameBalance.ClickMultiplier) + 1;
             SaveMoney();
             SaveUpgradeList();
             inventorySell.UpdateShopMoney();
@@ -247,13 +256,13 @@ public class InventoryStorage : MonoBehaviour
         if (upgradeList[1] < gameBalance.MaxFishChanceUpgrade)
         {
             UpgradeNameSlot.text = "Fish Chance Lvl " + (upgradeList[1] + 1);
-            UpgradeDescriptionSlot.text = "Increase Fish Chance from " + (upgradeList[1] * gameBalance.FishChanceMultiplier) + " > " + ((upgradeList[1] + 1) * gameBalance.FishChanceMultiplier);
+            UpgradeDescriptionSlot.text = "Increase Fish Chance from " + ((upgradeList[1] * gameBalance.FishChanceMultiplier) + 1) + " > " + (((upgradeList[1] + 1) * gameBalance.FishChanceMultiplier) + 1);
             UpgradePriceSlot.text = "$" + Mathf.RoundToInt(gameBalance.BaseFishChanceUpgradePrice * ((upgradeList[1] + 1) * gameBalance.FishChanceUpgradePriceMultiplier));
         }
         else
         {
             UpgradeNameSlot.text = "Fish Chance Lvl MAX";
-            UpgradeDescriptionSlot.text = "Fish Chance is " + (upgradeList[1] * gameBalance.FishChanceMultiplier) + " (MAX)";
+            UpgradeDescriptionSlot.text = "Fish Chance is " + ((upgradeList[1] * gameBalance.FishChanceMultiplier) + 1) + " (MAX)";
             UpgradePriceSlot.text = "MAXED";
         }
     }
@@ -265,6 +274,7 @@ public class InventoryStorage : MonoBehaviour
         {
             money -= upgradePrice;
             upgradeList[1]++;
+            gameBalance.FishChance = Mathf.RoundToInt(upgradeList[1] * gameBalance.FishChanceMultiplier) + 1;
             SaveMoney();
             SaveUpgradeList();
             inventorySell.UpdateShopMoney();
@@ -325,7 +335,7 @@ public class InventoryStorage : MonoBehaviour
         UpgradeBuyButton.onClick.RemoveAllListeners();
         UpgradeBuyButton.onClick.AddListener(() => SetBuyButtonMap1Upgrade());
         UnselectAllUpgrades();
-        Map1Background.color = Color.gray;
+        //Map1Background.color = Color.gray;
         UpgradeBuyButton.gameObject.SetActive(true);
         Color newColor1 = UpgradeImageSlot.color;
         newColor1.a = 1;
@@ -336,14 +346,14 @@ public class InventoryStorage : MonoBehaviour
     {
         if (upgradeList[3] < 1)
         {
-            UpgradeNameSlot.text = "Map1";
-            UpgradeDescriptionSlot.text = "Allows you to travel to Map1";
+            UpgradeNameSlot.text = "Spring";
+            UpgradeDescriptionSlot.text = "Allows you to fish in the Spring season!";
             UpgradePriceSlot.text = "$" + gameBalance.BaseMap1UpgradePrice;
         }
         else
         {
-            UpgradeNameSlot.text = "Map1 PURCHASED";
-            UpgradeDescriptionSlot.text = "Map1 is Purchased!";
+            UpgradeNameSlot.text = "Spring PURCHASED";
+            UpgradeDescriptionSlot.text = "Spring is Purchased!";
             UpgradePriceSlot.text = "PURCHASED";
         }
     }
@@ -370,7 +380,7 @@ public class InventoryStorage : MonoBehaviour
         UpgradeBuyButton.onClick.RemoveAllListeners();
         UpgradeBuyButton.onClick.AddListener(() => SetBuyButtonMap2Upgrade());
         UnselectAllUpgrades();
-        Map2Background.color = Color.gray;
+      // Map2Background.color = Color.gray;
         UpgradeBuyButton.gameObject.SetActive(true);
         Color newColor2 = UpgradeImageSlot.color;
         newColor2.a = 1;
@@ -381,14 +391,14 @@ public class InventoryStorage : MonoBehaviour
     {
         if (upgradeList[4] < 1)
         {
-            UpgradeNameSlot.text = "Map2";
-            UpgradeDescriptionSlot.text = "Allows you to travel to Map2";
+            UpgradeNameSlot.text = "Autumn";
+            UpgradeDescriptionSlot.text = "Allows you to fish in the Autumn season!";
             UpgradePriceSlot.text = "$" + gameBalance.BaseMap2UpgradePrice;
         }
         else
         {
-            UpgradeNameSlot.text = "Map2 PURCHASED";
-            UpgradeDescriptionSlot.text = "Map2 is Purchased!";
+            UpgradeNameSlot.text = "Autumn PURCHASED";
+            UpgradeDescriptionSlot.text = "Autumn is Purchased!";
             UpgradePriceSlot.text = "PURCHASED";
         }
     }
@@ -415,7 +425,7 @@ public class InventoryStorage : MonoBehaviour
         UpgradeBuyButton.onClick.RemoveAllListeners();
         UpgradeBuyButton.onClick.AddListener(() => SetBuyButtonMap3Upgrade());
         UnselectAllUpgrades();
-        Map3Background.color = Color.gray;
+   //     Map3Background.color = Color.gray;
         UpgradeBuyButton.gameObject.SetActive(true);
         Color newColor3 = UpgradeImageSlot.color;
         newColor3.a = 1;
@@ -426,14 +436,14 @@ public class InventoryStorage : MonoBehaviour
     {
         if (upgradeList[5] < 1)
         {
-            UpgradeNameSlot.text = "Map3";
-            UpgradeDescriptionSlot.text = "Allows you to travel to Map3";
+            UpgradeNameSlot.text = "Winter";
+            UpgradeDescriptionSlot.text = "Allows you to fish in the Winter season!";
             UpgradePriceSlot.text = "$" + gameBalance.BaseMap3UpgradePrice;
         }
         else
         {
-            UpgradeNameSlot.text = "Map3 PURCHASED";
-            UpgradeDescriptionSlot.text = "Map3 is Purchased!";
+            UpgradeNameSlot.text = "Winter PURCHASED";
+            UpgradeDescriptionSlot.text = "Winter is Purchased!";
             UpgradePriceSlot.text = "PURCHASED";
         }
     }
@@ -463,9 +473,6 @@ public class InventoryStorage : MonoBehaviour
         RodStrengthBackground.color = Color.white;
         FishChanceBackground.color = Color.white;
         AutoCastBackground.color = Color.white;
-        Map1Background.color = Color.white;
-        Map2Background.color = Color.white;
-        Map3Background.color = Color.white;
     }
 
     public void SaveUpgradeList()
@@ -507,7 +514,7 @@ public class InventoryStorage : MonoBehaviour
     public void SaveFishList()
     {
         string json = JsonConvert.SerializeObject(storedFishList);
-        PlayerPrefs.SetString("StoredFishList", json);
+        PlayerPrefs.SetString("StoredFishList1235jerma", json);
         PlayerPrefs.Save();
     }
 
@@ -525,4 +532,18 @@ public class InventoryStorage : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
     }
+
+    public void SetCurrentMap(int MapNum)
+    {
+        CurrentMap = MapNum;    
+        
+    }
+
+    public void UpdateLockedMaps()
+    {
+        LockedMap1.SetActive(!(upgradeList[3] == 1));
+        LockedMap2.SetActive(!(upgradeList[4] == 1));
+        LockedMap3.SetActive(!(upgradeList[5] == 1));
+    }
+
 }

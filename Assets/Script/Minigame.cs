@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Radishmouse;
@@ -26,6 +27,7 @@ public class Minigame : MonoBehaviour
     public GameObject FishPrefab;
     private GameObject FishSlot;
     public InventoryStorage InventoryStorage;
+    public GameBalance gameBalance;
     public TMP_Text DebugText;
 
 
@@ -49,8 +51,11 @@ public class Minigame : MonoBehaviour
 
     public FishDisplay GenerateFish()
     {
-        int randomID = Random.Range(1, 4);
-        Fish selectedFish = Fish.GetItemData(randomID);
+        // Getting a random fish from the possible fish in current map
+        int CurrentMap = InventoryStorage.CurrentMap;
+        int RandomFishIndex = UnityEngine.Random.Range(0, gameBalance.AllFishMaps[CurrentMap].Length);
+        Fish selectedFish = Fish.GetItemData(gameBalance.AllFishMaps[CurrentMap][RandomFishIndex]);     
+
         FishDisplay fishToReturn = new FishDisplay();
         fishToReturn.fish = selectedFish;
         //fishToReturn.dynamicWeight = selectedFish.weight 
@@ -59,16 +64,22 @@ public class Minigame : MonoBehaviour
         float cumulativeSum = 0f;
         float randomNumber = 0;
         float totalPercentages = 0;
+        int[] adjustedRarityPercentages = new int[RarityPercentages.Length];
 
-        for (int i = 0; i < RarityPercentages.Length; i++)
+        for (int i = 0; i < adjustedRarityPercentages.Length; i++)
         {
-            totalPercentages += RarityPercentages[i];
+            adjustedRarityPercentages[i] = Mathf.RoundToInt(RarityPercentages[i] + ((i + 1) * gameBalance.FishChance));
         }
-        randomNumber = Random.Range(0, totalPercentages);
 
-        for (int i = 0; i < RarityPercentages.Length; i++)
+        for (int i = 0; i < adjustedRarityPercentages.Length; i++)
         {
-            cumulativeSum += RarityPercentages[i];
+            totalPercentages += adjustedRarityPercentages[i];
+        }
+        randomNumber = UnityEngine.Random.Range(0, totalPercentages);
+
+        for (int i = 0; i < adjustedRarityPercentages.Length; i++)
+        {
+            cumulativeSum += adjustedRarityPercentages[i];
             if (randomNumber < cumulativeSum)
             {
                 fishToReturn.rarity = i;
@@ -100,8 +111,16 @@ public class Minigame : MonoBehaviour
                 new Vector3(35, 150, -16), // Bottom-right
                 new Vector3(35, 150, -16) // Bottom-left
             );
-        SpawnRandomObjects(Random.Range(1, 6), 1);
         ChooseFish = GenerateFish();
+        int minimumAmountBarriers = 1;
+        if ((ChooseFish.rarity + 1) > 3)
+        {
+            minimumAmountBarriers = 2;
+        }
+        SpawnRandomObjects(UnityEngine.Random.Range(minimumAmountBarriers, 6),
+            Mathf.RoundToInt(Mathf.Lerp(1, 25, ChooseFish.rarity / 4f)),
+            Mathf.RoundToInt(Mathf.Lerp(5, 125, ChooseFish.rarity / 4f))
+            );
     }
 
 
@@ -223,7 +242,7 @@ public class Minigame : MonoBehaviour
 
     public void ClickMinigame()
     {
-        CurrentClicks--;
+        CurrentClicks -= gameBalance.ClickStrength;
         TMP_Text ClickText = BarrierList[0].BarrierObject.GetComponentInChildren<TMP_Text>();
         ClickText.text = CurrentClicks.ToString();
         if (CurrentClicks <= 0)
@@ -244,7 +263,7 @@ public class Minigame : MonoBehaviour
         }
     }
 
-    public void SpawnRandomObjects(int HowMany, int Clicks)
+    public void SpawnRandomObjects(int HowMany, int MinClicks, int MaxClicks)
     {
         Vector2 StartPoint = new Vector2(25 - (Offset * 2), 150);
         Vector2 EndPoint = new Vector2(5 - (Offset * 2) + 5, 0);
@@ -256,13 +275,13 @@ public class Minigame : MonoBehaviour
         List<Barrier> slotIndices = new List<Barrier>();
         for (int i = 0; i < 11; i++)
         {
-            slotIndices.Add(new Barrier { Slot = i, Clicks = Clicks * Random.Range(1, 6) });
+            slotIndices.Add(new Barrier { Slot = i, Clicks = UnityEngine.Random.Range(MinClicks, MaxClicks) });
         }
 
         // Shuffle the slot indices
         for (int i = slotIndices.Count - 1; i > 0; i--)
         {
-            int randomIndex = Random.Range(0, i + 1);
+            int randomIndex = UnityEngine.Random.Range(0, i + 1);
             Barrier temp = slotIndices[i];
             slotIndices[i] = slotIndices[randomIndex];
             slotIndices[randomIndex] = temp;
@@ -325,8 +344,8 @@ public class Minigame : MonoBehaviour
         float stddev = Mathf.Lerp(5f, 20f, (rarity - 1) / 4f);
 
         // Generate two random numbers between 0 and 1
-        float u1 = Random.value;
-        float u2 = Random.value;
+        float u1 = UnityEngine.Random.value;
+        float u2 = UnityEngine.Random.value;
 
         // Box-Muller transform to generate a standard normal distribution (mean = 0, stddev = 1)
         float standardNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Cos(2.0f * Mathf.PI * u2);
