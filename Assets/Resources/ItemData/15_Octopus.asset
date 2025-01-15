@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3fd90c1f51e2534ca808a6492d08a2b, type: 3}
-  m_Name: Pufferfish
+  m_Name: 15_Octopus
   m_EditorClassIdentifier: 
-  ID: 1
-  fishName: Pufferfish
-  image: {fileID: -371740909335319690, guid: 95b6296897887e84d97d5dffdffaf49f, type: 3}
-  weight: 25
-  price: 50
+  ID: 15
+  fishName: Octopus
+  image: {fileID: 3041970383809997380, guid: 83660e3bc0324a34e8c24691d14f2aca, type: 3}
+  weight: 80
+  price: 94
+  flavourText: Get your sticky hands off of me...

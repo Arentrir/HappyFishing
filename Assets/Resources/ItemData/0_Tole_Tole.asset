@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fd90c1f51e2534ca808a6492d08a2b, type: 3}
+  m_Name: 0_Tole_Tole
+  m_EditorClassIdentifier: 
+  ID: 0
+  fishName: Tole Tole
+  image: {fileID: -504791322937157327, guid: 560a921663eca49498af2e6d1a3b66ae, type: 3}
+  weight: 1000000
+  price: 1000000
+  flavourText: Vro...

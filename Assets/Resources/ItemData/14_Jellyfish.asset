@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3fd90c1f51e2534ca808a6492d08a2b, type: 3}
-  m_Name: Tropical Fish
+  m_Name: 14_Jellyfish
   m_EditorClassIdentifier: 
-  ID: 2
-  fishName: Tropical Fish
-  image: {fileID: -4606014852497165429, guid: d2d0735ff44ab8d4194e847d9461bfe6, type: 3}
+  ID: 14
+  fishName: Jellyfish
+  image: {fileID: 1965404493759735644, guid: c03c5631054fecb45bdd907350dedb93, type: 3}
   weight: 20
-  price: 60
+  price: 21
+  flavourText: 'WARNING: DOES NOT TASTE LIKE JELLY!'

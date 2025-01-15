@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fd90c1f51e2534ca808a6492d08a2b, type: 3}
+  m_Name: 13_Stingray
+  m_EditorClassIdentifier: 
+  ID: 13
+  fishName: Stingray
+  image: {fileID: 6018910308036209004, guid: f37c8cce61d5c8e4aa18e0b54525bdc2, type: 3}
+  weight: 100
+  price: 200
+  flavourText: It stings me to say this...

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fd90c1f51e2534ca808a6492d08a2b, type: 3}
+  m_Name: 20_Candy
+  m_EditorClassIdentifier: 
+  ID: 20
+  fishName: Candy
+  image: {fileID: -3366272070310193754, guid: c13326e86df8ca9418c68b4c229fae94, type: 3}
+  weight: 3
+  price: 500
+  flavourText: Tasty... mmm!

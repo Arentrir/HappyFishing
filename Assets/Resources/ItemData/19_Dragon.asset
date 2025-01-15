@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3fd90c1f51e2534ca808a6492d08a2b, type: 3}
-  m_Name: Salmon
+  m_Name: 19_Dragon
   m_EditorClassIdentifier: 
-  ID: 3
-  fishName: Salmon
-  image: {fileID: -266502827475090653, guid: 32a5b2b990a92824cbfa86566d1d23b8, type: 3}
-  weight: 40
-  price: 25
+  ID: 19
+  fishName: Dragon
+  image: {fileID: 1372335161102834277, guid: e1c08341abeb25c4394c61eadabbf683, type: 3}
+  weight: 350
+  price: 600
+  flavourText: DRAGON THESE WHAT, SIR?

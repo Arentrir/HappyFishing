@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,9 +8,10 @@ public class SlideText : MonoBehaviour
     public Vector2 startPosition;      // The starting position off-screen (to the right)
     public Vector2 endPosition;        // The ending position on-screen
     public float slideDuration = 2.0f; // Time it takes to slide in
-    private float elapsedTime = 0;     // Tracks elapsed time
+    public float elapsedTime = 0;     // Tracks elapsed time
 
     private bool isSliding = false;    // Determines if sliding is active
+    public bool shouldCloseWhenDone;
 
     void Start()
     {
@@ -32,6 +34,10 @@ public class SlideText : MonoBehaviour
             if (t >= 1.0f)
             {
                 isSliding = false;
+                if (shouldCloseWhenDone)
+                {
+                    this.gameObject.SetActive(false);
+                }
             }
         }
     }
@@ -39,6 +45,8 @@ public class SlideText : MonoBehaviour
     // Call this method to start sliding the text
     public void StartSliding()
     {
+        Debug.Log(startPosition + " START POS");
+        Debug.Log(endPosition + " END POS");
         elapsedTime = 0;
         isSliding = true;
     }

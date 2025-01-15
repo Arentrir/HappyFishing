@@ -29,6 +29,7 @@ public class Minigame : MonoBehaviour
     public InventoryStorage InventoryStorage;
     public GameBalance gameBalance;
     public TMP_Text DebugText;
+    public RectTransform Spinner;
 
 
     [Range(0, 100)]
@@ -87,6 +88,11 @@ public class Minigame : MonoBehaviour
             }
         }
         fishToReturn.dynamicWeight = GetRandomNumber(selectedFish.weight, fishToReturn.rarity + 1, selectedFish.weight / 3, selectedFish.weight * 5);
+        Debug.Log(selectedFish.weight);
+        for (int i = 0; i < 10; i++) 
+        {
+            Debug.Log(GetRandomNumber(selectedFish.weight, fishToReturn.rarity + 1, selectedFish.weight / 3, selectedFish.weight * 5));
+        }
         return fishToReturn; 
     } 
 
@@ -221,6 +227,19 @@ public class Minigame : MonoBehaviour
         Progress += Time.deltaTime * (100 / ReelTime);
         float t = Progress / 100f;
 
+
+
+        float newZRotation = Spinner.localEulerAngles.z + 400 * Time.deltaTime;
+
+        // Apply the rotation
+        Vector3 newRotation = Spinner.localEulerAngles;
+        newRotation.z = newZRotation;
+        Spinner.localEulerAngles = newRotation;
+
+       // Spinner.localEulerAngles = new Vector3(0, 0, Spinner.rotation.z + (Time.deltaTime * 180));
+
+
+
         ProgressBar.trapezoidPoints[0] = Vector3.Lerp(new Vector3(20, 150, -15), new Vector3(5, 0, -15), t);
         ProgressBar.trapezoidPoints[3] = Vector3.Lerp(new Vector3(35, 150, -15), new Vector3(50, 0, -15), t);
 
@@ -343,6 +362,10 @@ public class Minigame : MonoBehaviour
         // Higher rarity -> Larger standard deviation
         float stddev = Mathf.Lerp(5f, 20f, (rarity - 1) / 4f);
 
+        // Adjust the mean with a smaller bias to max for higher rarities
+        // This ensures low weights remain possible but less likely as rarity increases
+        float adjustedMean = Mathf.Lerp(baseWeight, (baseWeight + max) / 2f, (rarity - 1) / 4f);
+
         // Generate two random numbers between 0 and 1
         float u1 = UnityEngine.Random.value;
         float u2 = UnityEngine.Random.value;
@@ -350,13 +373,14 @@ public class Minigame : MonoBehaviour
         // Box-Muller transform to generate a standard normal distribution (mean = 0, stddev = 1)
         float standardNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Cos(2.0f * Mathf.PI * u2);
 
-        // Adjust the distribution using baseWeight (mean) and rarity (stddev)
-        float mean = baseWeight;
-        float result = mean + standardNormal * stddev;
+        // Adjust the distribution using adjusted mean and rarity-based standard deviation
+        float result = adjustedMean + standardNormal * stddev;
 
         // Clamp the result to the specified range
         return Mathf.Clamp(result, min, max);
     }
+
+
 
 
 }

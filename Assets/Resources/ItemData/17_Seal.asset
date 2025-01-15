@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fd90c1f51e2534ca808a6492d08a2b, type: 3}
+  m_Name: 17_Seal
+  m_EditorClassIdentifier: 
+  ID: 17
+  fishName: Seal
+  image: {fileID: -8741545005956383620, guid: 856419a9781c13842a6099c917fcf5f7, type: 3}
+  weight: 300
+  price: 150
+  flavourText: Why did the seal cross the road? To get to the other tide.

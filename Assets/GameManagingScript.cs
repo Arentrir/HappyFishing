@@ -26,6 +26,7 @@ public class GameManagingScript : MonoBehaviour {
     public bool isMinigaming;
 
 
+
     public float ChargeCounter;
     public float BiteCounter;
     public float BiteTime;
@@ -174,19 +175,25 @@ public class GameManagingScript : MonoBehaviour {
         }
         if (isFishReady && FishFumble > FishRunTimer) 
         {
-            isFishReady = false;   
-            isIdle = true;
-            Bobber.anchoredPosition = Vector2.zero;
-            PreMinigameText2.StartSliding();
+                PreMinigameText2.StartSliding();
+            if (isFishReady && FishFumble > FishRunTimer)
+            {
+                isFishReady = false;
+                isIdle = true;
+                Bobber.anchoredPosition = Vector2.zero; 
+            }
         }
     }
     public void StartMinigame() 
     {
-        PreMinigameScreen.SetActive(false);
-        isFishReady = false;
-        isMinigaming = true;
-        Minigame.gameObject.SetActive(true);
-        Minigame.StartMinigame();
+        if (FishFumble < FishRunTimer)
+        {
+            PreMinigameScreen.SetActive(false);
+            isFishReady = false;
+            isMinigaming = true;
+            Minigame.gameObject.SetActive(true);
+            Minigame.StartMinigame();
+        }
     }
 
     public void ResetFishing() 

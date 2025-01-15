@@ -12,6 +12,7 @@ public class FishInventoryDisplay : MonoBehaviour
     public TMP_Text DetailsFishNameSlot;
     public TMP_Text DetailsFishWeightSlot;
     public TMP_Text DetailsFishPriceSlot;
+    public Image DetailsPricePanel;
     public TMP_Text DetailsFishFlavourTextSlot;
 
 
@@ -54,9 +55,10 @@ public class FishInventoryDisplay : MonoBehaviour
         DetailsFishNameSlot.text = $"<color={rarityColor}>{fishData.fishName} {stars}</color>";
 
         // Set other details
-        DetailsFishWeightSlot.text = "Weight: " + ThisFish.storedFishWeight.ToString();
-        DetailsFishPriceSlot.text = "Price: " + InventorySell.CalculatePrice(Fish.GetItemData(ThisFish.storedFishID).price, ThisFish.storedFishWeight, Fish.GetItemData(ThisFish.storedFishID).weight, ThisFish.storedFishRarity);
+        DetailsFishWeightSlot.text = "Weight: " + ThisFish.storedFishWeight.ToString() + "\n" + "Base Weight: " + Fish.GetItemData(ThisFish.storedFishID).weight;
+        DetailsFishPriceSlot.text = "$" + InventorySell.CalculatePrice(Fish.GetItemData(ThisFish.storedFishID).price, ThisFish.storedFishWeight, Fish.GetItemData(ThisFish.storedFishID).weight, ThisFish.storedFishRarity);
         DetailsFishFlavourTextSlot.text = fishData.flavourText;
+        DetailsPricePanel.gameObject.SetActive(true);
     }
 
     public static string GetRarityColor(int rarity)

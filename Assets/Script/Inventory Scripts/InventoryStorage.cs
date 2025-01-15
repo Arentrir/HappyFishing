@@ -14,6 +14,7 @@ public class StoredFish
 }
 public class InventoryStorage : MonoBehaviour
 {
+    public int CurrentGameProfile;
     public int money;
     public int[] upgradeList;
     // Upgrade Prices
@@ -30,6 +31,7 @@ public class InventoryStorage : MonoBehaviour
     public TMP_Text DetailsFishNameSlot;
     public TMP_Text DetailsFishWeightSlot;
     public TMP_Text DetailsFishPriceSlot;
+    public Image DetailsPricePanel;
     public TMP_Text DetailsFishFlavourTextSlot;
 
     public Image UpgradeImageSlot;
@@ -70,21 +72,17 @@ public class InventoryStorage : MonoBehaviour
     public GameObject LockedMap2;
     public GameObject LockedMap3;
 
+    public GameObject[] Backgrounds;
+
+    public Image[] GameProfileButtons;
+
     void Start()
     {
         storedFishList = new List<StoredFish>();
-        DetailsImageSlot.sprite = null;
-        Color newColor = DetailsImageSlot.color;
-        newColor.a = 0;
-        DetailsImageSlot.color = newColor;  
-        DetailsFishNameSlot.text = "";
-        DetailsFishWeightSlot.text = "";
-        DetailsFishPriceSlot.text = "";
-        DetailsFishFlavourTextSlot.text = "";
-        LoadMoney();
-        LoadFishList();
+        RefreshInventoryDetails();
+        LoadGameProfile(PlayerPrefs.GetInt("CurrentGameProfile", 1));
         UpdateAllUpgradePrices();
-        LoadUpgradeList();
+        SetCurrentMap(CurrentMap);
         Screen.autorotateToLandscapeLeft = true;
         UpgradeImageSlot.sprite = null;
         Color newColor1 = UpgradeImageSlot.color;
@@ -94,6 +92,7 @@ public class InventoryStorage : MonoBehaviour
         UpgradeDescriptionSlot.text = "";
         UpgradePriceSlot.text = "";
         UpgradeBuyButton.gameObject.SetActive(false);
+
 
         // Update the balance sheet
         gameBalance.ClickStrength = Mathf.RoundToInt(upgradeList[0] * gameBalance.ClickMultiplier) + 1;
@@ -130,6 +129,7 @@ public class InventoryStorage : MonoBehaviour
                     fishInventoryDisplay.DetailsFishWeightSlot = DetailsFishWeightSlot;
                     fishInventoryDisplay.DetailsFishPriceSlot = DetailsFishPriceSlot;
                     fishInventoryDisplay.DetailsFishFlavourTextSlot = DetailsFishFlavourTextSlot;
+                    fishInventoryDisplay.DetailsPricePanel = DetailsPricePanel;
                 }
             }
     }
@@ -481,7 +481,7 @@ public class InventoryStorage : MonoBehaviour
         string arrayString = string.Join(",", upgradeList);
 
         // Save the string to PlayerPrefs
-        PlayerPrefs.SetString("UpgradeList", arrayString);
+        PlayerPrefs.SetString("UpgradeList" + CurrentGameProfile, arrayString);
 
         // Save PlayerPrefs to ensure it's written
         PlayerPrefs.Save();
@@ -490,7 +490,7 @@ public class InventoryStorage : MonoBehaviour
     public void LoadUpgradeList()
     {
         // Get the string from PlayerPrefs
-        string arrayString = PlayerPrefs.GetString("UpgradeList", "0,0,0,0,0,0");
+        string arrayString = PlayerPrefs.GetString("UpgradeList" + CurrentGameProfile, "0,0,0,0,0,0");
 
         // Split the string into an array of strings
         string[] stringArray = arrayString.Split(',');
@@ -502,30 +502,64 @@ public class InventoryStorage : MonoBehaviour
 
     public void SaveMoney()
     {
-        PlayerPrefs.SetInt("Money", money);
+        PlayerPrefs.SetInt("Money" + CurrentGameProfile, money);
         PlayerPrefs.Save();
     }
 
     public void LoadMoney()
     {
-        money = PlayerPrefs.GetInt("Money", 0);
+        money = PlayerPrefs.GetInt("Money" + CurrentGameProfile, 0);
     }
 
     public void SaveFishList()
     {
         string json = JsonConvert.SerializeObject(storedFishList);
-        PlayerPrefs.SetString("StoredFishList1235jerma", json);
+        PlayerPrefs.SetString("StoredFishList1235jerma" + CurrentGameProfile, json);
         PlayerPrefs.Save();
     }
 
     public void LoadFishList()
     {
-        string json = PlayerPrefs.GetString("StoredFishList1235jerma");
+        string json = PlayerPrefs.GetString("StoredFishList1235jerma" + CurrentGameProfile);
         storedFishList = JsonConvert.DeserializeObject<List<StoredFish>>(json);
         if (storedFishList == null)
         {
             storedFishList = new List<StoredFish>();    
         }
+    }
+
+    public void SaveGameProfile()
+    {
+        PlayerPrefs.SetInt("CurrentGameProfile", CurrentGameProfile);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadGameProfile(int GameProfileNumber)
+    {
+       CurrentGameProfile = GameProfileNumber;
+        LoadMoney();
+        LoadMap();
+        LoadFishList();
+        LoadUpgradeList();
+        SetCurrentMap(CurrentMap);
+        RefreshInventoryDetails();
+        for (int i = 0; i < GameProfileButtons.Length; i++) 
+        {
+            GameProfileButtons[i].color = Color.white;
+        }
+        GameProfileButtons[GameProfileNumber - 1].color = Color.gray;
+        SaveGameProfile();
+    }
+
+    public void SaveMap()
+    {
+        PlayerPrefs.SetInt("CurrentMap" + CurrentGameProfile, CurrentMap);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadMap()
+    {
+        CurrentMap = PlayerPrefs.GetInt("CurrentMap" + CurrentGameProfile, 0);
     }
 
     public void DeleteAll()
@@ -535,8 +569,13 @@ public class InventoryStorage : MonoBehaviour
 
     public void SetCurrentMap(int MapNum)
     {
-        CurrentMap = MapNum;    
-        
+        CurrentMap = MapNum;
+        for (int i = 0; i < Backgrounds.Length; i++)
+        {
+            Backgrounds[i].SetActive(false);
+        }
+        Backgrounds[CurrentMap].SetActive(true);
+        SaveMap();
     }
 
     public void UpdateLockedMaps()
@@ -546,4 +585,15 @@ public class InventoryStorage : MonoBehaviour
         LockedMap3.SetActive(!(upgradeList[5] == 1));
     }
 
+    public void RefreshInventoryDetails()
+    {
+        DetailsImageSlot.sprite = null;
+        Color newColor = DetailsImageSlot.color;
+        newColor.a = 0;
+        DetailsImageSlot.color = newColor;
+        DetailsFishNameSlot.text = "";
+        DetailsFishWeightSlot.text = "";
+        DetailsFishPriceSlot.text = "";
+        DetailsFishFlavourTextSlot.text = "";
+    }
 }

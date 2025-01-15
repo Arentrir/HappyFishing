@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 934e0336efdda744ea169bef1c8ebb54
+guid: dad722110b4bf6c44a16636411ad5855
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8517955059883361677
-    second: luckfinal_0
+      213: 7203339641779158459
+    second: Carp_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +52,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 35, y: 35, z: 35, w: 35}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: luckfinal_0
+      name: Carp_0
       rect:
         serializedVersion: 2
-        x: 112
-        y: 112
-        width: 267
-        height: 267
+        x: 36
+        y: 30
+        width: 181
+        height: 181
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 37a39eac0052ac980800000000000000
-      internalID: -8517955059883361677
+      spriteID: bbd7cb04d3767f360800000000000000
+      internalID: 7203339641779158459
       vertices: []
       indices: 
       edges: []
@@ -164,8 +164,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e7fac8620397bb44ea75ca543ac82cf8
-    internalID: 0
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      luckfinal_0: -8517955059883361677
+      Carp_0: 7203339641779158459
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
