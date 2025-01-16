@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 10_Blue_Discus
   m_EditorClassIdentifier: 
   ID: 10
-  fishName: Blue_Discus
+  fishName: Blue Discus
   image: {fileID: 7066894958235725176, guid: b183665277d0fd74e9adb37ae72ea15c, type: 3}
   weight: 33
   price: 45

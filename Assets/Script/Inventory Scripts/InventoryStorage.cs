@@ -497,7 +497,8 @@ public class InventoryStorage : MonoBehaviour
 
         // Convert the string array to an int array
         upgradeList = Array.ConvertAll(stringArray, int.Parse);
-
+        gameBalance.ClickStrength = Mathf.RoundToInt(upgradeList[0] * gameBalance.ClickMultiplier) + 1;
+        gameBalance.FishChance = Mathf.RoundToInt(upgradeList[1] * gameBalance.FishChanceMultiplier) + 1;
     }
 
     public void SaveMoney()
@@ -595,5 +596,6 @@ public class InventoryStorage : MonoBehaviour
         DetailsFishWeightSlot.text = "";
         DetailsFishPriceSlot.text = "";
         DetailsFishFlavourTextSlot.text = "";
+        DetailsPricePanel.gameObject.SetActive(false);
     }
 }

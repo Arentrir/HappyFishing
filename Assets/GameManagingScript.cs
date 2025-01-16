@@ -100,6 +100,8 @@ public class GameManagingScript : MonoBehaviour {
         FishFumble = 10;
         ElapsedTime = 10;
         ChargeCounter2 = 0;
+        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = (int)Screen.currentResolution.refreshRateRatio.value;
     }
 
 

@@ -1,5 +1,7 @@
 using UnityEngine;
 
+
+
 public class GameBalance : MonoBehaviour
 {
     [Header("Barrier Health")]
@@ -42,6 +44,15 @@ public class GameBalance : MonoBehaviour
     public int[] map3PossibleFish;
 
     public int[][] AllFishMaps;
+
+    [System.Serializable]
+    public struct LootBoxData
+    {
+        public string itemName;
+        public float probability;
+    }
+
+    public LootBoxData[] allLootBoxes;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
