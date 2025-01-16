@@ -88,11 +88,6 @@ public class Minigame : MonoBehaviour
             }
         }
         fishToReturn.dynamicWeight = GetRandomNumber(selectedFish.weight, fishToReturn.rarity + 1, selectedFish.weight / 3, selectedFish.weight * 5);
-        Debug.Log(selectedFish.weight);
-        for (int i = 0; i < 10; i++) 
-        {
-            Debug.Log(GetRandomNumber(selectedFish.weight, fishToReturn.rarity + 1, selectedFish.weight / 3, selectedFish.weight * 5));
-        }
         return fishToReturn; 
     } 
 
@@ -150,7 +145,6 @@ public class Minigame : MonoBehaviour
         {
             isFishFail = true;
             FailMoveScreen.StartSliding();
-            Debug.Log("Fail Fish!");
         }
         if (!isFishFail && !isFishCaught)
         {

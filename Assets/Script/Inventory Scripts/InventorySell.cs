@@ -35,7 +35,6 @@ public class InventorySell : MonoBehaviour
     {
         int children;
         children = InventoryContent.transform.childCount;
-        Debug.Log(children);
         if (children >= 1)
         {
             foreach (Transform child in InventoryContent.transform)

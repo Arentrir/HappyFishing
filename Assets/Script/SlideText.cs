@@ -45,8 +45,6 @@ public class SlideText : MonoBehaviour
     // Call this method to start sliding the text
     public void StartSliding()
     {
-        Debug.Log(startPosition + " START POS");
-        Debug.Log(endPosition + " END POS");
         elapsedTime = 0;
         isSliding = true;
     }

@@ -37,7 +37,7 @@ public class GameManagingScript : MonoBehaviour {
 
     public void CastLine()
     {
-        Debug.Log("Line Cast");
+
     }
 
     public void StartCharging()
@@ -162,7 +162,6 @@ public class GameManagingScript : MonoBehaviour {
             BiteCounter += Time.deltaTime;
             if (BiteCounter > BiteTime) 
             {
-                Debug.Log("Fish on the Line!");
                 isFishReady = true;
                 FishFumble = 0;
                 isWaiting = false;
@@ -213,7 +212,6 @@ public class GameManagingScript : MonoBehaviour {
         ChargeCounter2 = 0;
         FishFumble = 0;
         LineCastTime = 0;
-        Debug.Log(Bobber.anchoredPosition);
     }
 
 }

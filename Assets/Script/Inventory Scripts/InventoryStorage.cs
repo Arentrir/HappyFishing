@@ -80,9 +80,9 @@ public class InventoryStorage : MonoBehaviour
     {
         storedFishList = new List<StoredFish>();
         RefreshInventoryDetails();
-        LoadGameProfile(PlayerPrefs.GetInt("CurrentGameProfile", 1));
+        //LoadGameProfile(PlayerPrefs.GetInt("CurrentGameProfile", 1));
         UpdateAllUpgradePrices();
-        SetCurrentMap(CurrentMap);
+        //SetCurrentMap(CurrentMap);
         Screen.autorotateToLandscapeLeft = true;
         UpgradeImageSlot.sprite = null;
         Color newColor1 = UpgradeImageSlot.color;
@@ -109,7 +109,6 @@ public class InventoryStorage : MonoBehaviour
     {
         int children;
         children = InventoryContent.transform.childCount;
-        Debug.Log(children);
         if (children >= 1)
         {
             foreach (Transform child in InventoryContent.transform)
@@ -546,9 +545,9 @@ public class InventoryStorage : MonoBehaviour
         RefreshInventoryDetails();
         for (int i = 0; i < GameProfileButtons.Length; i++) 
         {
-            GameProfileButtons[i].color = Color.white;
+            GameProfileButtons[i].color = Color.red;
         }
-        GameProfileButtons[GameProfileNumber - 1].color = Color.gray;
+        GameProfileButtons[GameProfileNumber - 1].color = Color.green;
         SaveGameProfile();
     }
 

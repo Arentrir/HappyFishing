@@ -4,6 +4,8 @@ public class DissolveController : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
     public Material material;
+    public InventoryStorage inventoryStorage;
+
     private int dissolveAmount = Shader.PropertyToID("_DissolveAmount");
     public float dissolveTimer;
     public float dissolveDuration;
@@ -56,6 +58,7 @@ public class DissolveController : MonoBehaviour
     }
     public void StartDissolve()
     {
-        dissolveTimer = 0;
+        dissolveTimer = 0.15f;
+        inventoryStorage.LoadGameProfile(PlayerPrefs.GetInt("CurrentGameProfile", 1));
     }
 }
